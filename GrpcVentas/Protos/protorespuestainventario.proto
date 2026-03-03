@@ -1,0 +1,204 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcVentas";
+
+package respuestainventario;
+//Se declaran los servicios
+service RespuestaInventarioProto {
+    rpc sayInventarioDataByte(InventarioDataByteRequest) returns (DataResponseInventario);
+    rpc sayInventarioTiempoRealDataByte(InventarioDataByteRequest) returns (DataResponseInventario);
+}
+
+//Se declaran solicitudes
+message InventarioDataRequest{
+    string nombrecorto =1;
+    repeated protoconfiguracionInventario lspconfiguracionInventario=2;
+    repeated protoInventarioFisicoCompleto lspinventariofisicocompleto=3;
+    repeated protoInventarioOtro lspinventariootros=4;
+    repeated protoInventarioOtrosDetalle lspinventariootrosdetalle=5;
+    repeated protoInventarioSurtido lspinventariosurtido=6;
+    repeated protoInventarioSurtidoDetalle lspinventariosurtidoDetalle=7;
+    repeated protoInventarioTraspaso lspinventariotraspaso=8;
+    repeated protoInventarioTraspasoDetalle lspinventariotraspasodetalle=9;
+    repeated protoInventario lspinventario=10;
+}
+
+message InventarioTiempoRealRequest{
+    string nombrecorto =1;
+    repeated protoconfiguracionInventario lspconfiguracionInventariotiemporeal=2;
+    repeated protoInventarioFisicoCompleto lspinventariofisicocompletotiemporeal=3;
+    repeated protoInventario lspinventariotiemporeal=4;
+}
+
+message InventarioDataByteRequest{
+    bytes compressdata=1;
+}
+
+//Se declaran respuestas
+message DataResponseInventario {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+}
+
+//Se declaran modelos
+message protoconfiguracionInventario{
+    string fechaInicio =1;
+    string fechaFin =2;
+    string IdFran =3;
+}
+
+message protoInventario {
+    int32 idfran = 1;
+    string idProducto = 2;
+    int32 existencia = 3;
+    int32 noDisponible = 4;
+    string fechaModificacion = 5; // Usa formato ISO 8601 o timestamp
+    string ultimaActualizacion = 6; // Usa formato ISO 8601 o timestamp
+}
+
+message protoInventarioFisicoCompleto {
+    int32 idfran = 1;
+    string fechaOperacion = 2; // Usar formato ISO 8601 o timestamp
+    string idProducto = 3;
+    bool contado = 4;
+    int32 existenciaInicial = 5;
+    int32 entradas = 6;
+    int32 salidas = 7;
+    int32 existenciaFinal = 8;
+    double costo = 9; // Los decimales se manejan como double en Protobuf
+}
+
+message protoInventarioOtro {
+    int32 idfran = 1;
+    int32 idRegistro = 2;
+    int32 idMovimiento = 3;
+    string documento = 4;
+    string referencia = 5;
+    string signo = 6;
+    string fechaOperacion = 7; // Usar formato ISO 8601 o timestamp
+    string fechaHoraCaptura = 8; // Usar formato ISO 8601 o timestamp
+    string idUsuario = 9;
+    string observacion = 10;
+    string sincRef = 11;
+    int32 idTipo = 12;
+}
+
+message protoInventarioOtrosDetalle {
+    int32 idfran = 1;
+    int32 idRegistro = 2;
+    string idProducto = 3;
+    int32 cantidad = 4;
+}
+
+message protoInventarioSurtido {
+    int32 idfran = 1;
+    int32 idSurtido = 2;
+    int32 idSurtidoLocal = 3;
+    int32 idMovimiento = 4; // Usamos int32 para evitar problemas de compatibilidad
+    string documento = 5;
+    string referencia = 6;
+    string fechaOperacion = 7; // Usar formato ISO 8601 o timestamp
+    string fechaHoraCaptura = 8; // Usar formato ISO 8601 o timestamp
+    string fechaOperacionDescarga = 9; // Usar formato ISO 8601 o timestamp
+    string fechaFacturacion = 10; // Usar formato ISO 8601 o timestamp
+    string idUsuario = 11;
+    string factura = 12;
+    string facturaFiscal = 13;
+    bool surtidoElectronico = 14;
+    int32 idProveedor = 15;
+    string idFarmaciaSurtido = 16;
+    int32 estatus = 17; // Usamos int32 para compatibilidad con byte
+    string observacion = 18;
+    double subtotal = 19;
+    double descuento = 20;
+    double impuesto = 21;
+    double total = 22;
+    string respaldo = 23;
+    int32 conteo = 24; // Usamos int32 para compatibilidad con byte
+    string sincRef = 25;
+    string signo = 26;
+    string fechavencimiento = 27; // Usar formato ISO 8601 o timestamp
+    string facturaFiscalRef = 28;
+}
+
+message protoInventarioSurtidoDetalle {
+    int32 idfran = 1;
+    int32 idSurtido = 2;
+    int32 idSurtidoLocal = 3;
+    string idProducto = 4;
+    int32 remision = 5;
+    int32 conteo1 = 6;
+    int32 conteo2 = 7;
+    int32 malEstado = 8;
+    double costoUnitario = 9;
+    double descuento = 10;
+    double impuesto = 11;
+    double total = 12;
+    double subtotal = 13; // Usar double para decimales opcionales
+    double ivaporciento = 14; // Usar double para decimales opcionales
+    double descuentoporciento = 15; // Usar double para decimales opcionales
+}
+
+message protoInventarioSurtidoFranquicium {
+    int32 idfran = 1;
+    int32 idSurtido = 2;
+    int32 idSurtidoLocal = 3;
+    int32 idMovimiento = 4; // Usamos int32 para compatibilidad en Protobuf
+    string documento = 5;
+    string referencia = 6;
+    string fechaOperacion = 7; // Usar formato ISO 8601 o timestamp
+    string fechaHoraCaptura = 8; // Usar formato ISO 8601 o timestamp
+    string fechaOperacionDescarga = 9; // Usar formato ISO 8601 o timestamp
+    string fechaFacturacion = 10; // Usar formato ISO 8601 o timestamp
+    string idUsuario = 11;
+    string factura = 12;
+    string facturaFiscal = 13;
+    bool surtidoElectronico = 14;
+    int32 idProveedor = 15;
+    string idFarmaciaSurtido = 16;
+    int32 estatus = 17; // Cambiado a int32 para compatibilidad con byte
+    string observacion = 18;
+    double subtotal = 19;
+    double descuento = 20;
+    double impuesto = 21;
+    double total = 22;
+    string respaldo = 23;
+    int32 conteo = 24; // Cambiado a int32 para compatibilidad con byte
+    string sincRef = 25;
+    string signo = 26;
+    string fechavencimiento = 27; // Usar formato ISO 8601 o timestamp
+    string facturaFiscalRef = 28;
+    string ultimaActualizacion = 29; // Usar formato ISO 8601 o timestamp
+}
+
+message protoInventarioTraspaso {
+    int32 idfran = 1;
+    string idFarmaciaEntrega = 2;
+    int32 idTraspaso = 3;
+    int32 idfranPedido = 4; // Puede ser nulo, así que se maneja como un campo opcional
+    string idFarmaciaPedido = 5;
+    int32 idConcepto = 6;
+    int32 idMovimiento = 7; // Usamos int32 para compatibilidad en Protobuf
+    string documento = 8;
+    string referencia = 9;
+    string fechaOperacion = 10; // Usar formato ISO 8601 o timestamp
+    string fechaHoraCaptura = 11; // Usar formato ISO 8601 o timestamp
+    string fechaHoraAutorizacion = 12; // Usar formato ISO 8601 o timestamp
+    string idUsuarioCaptura = 13;
+    string idUsuarioAutoriza = 14;
+    int32 estatus = 15; // Cambiado a int32 para compatibilidad con byte
+    string sincRef = 16;
+    double total = 17; // Usado double para decimal, y como es opcional, puede ser nulo
+}
+
+message protoInventarioTraspasoDetalle {
+    int32 idfran = 1;
+    string idFarmaciaEntrega = 2;
+    int32 idTraspaso = 3;
+    string idProducto = 4;
+    int32 solicitud = 5;
+    int32 autorizado = 6;
+    double precio = 7; // Usamos double para decimal, y puede ser nulo
+    double importe = 8; // Usamos double para decimal, y puede ser nulo
+}

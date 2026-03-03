@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcVentas";
+
+package respuestaproducto;
+//Se declaran los servicios
+service RespuestaProductoProto {
+    rpc sayProductoDataByte(ProductoDataByteRequest) returns (DataResponseProducto);
+}
+
+//Se declaran solicitudes
+message ProductoDataByteRequest{
+    bytes compressdata=1;
+}
+
+message lsProductoDataRequest{
+    string nombrecorto =1;
+    repeated protoconfiguracionProducto lspConfiguracionProducto =2;
+    repeated protoProductoFranquicia lspProductoFranquicia =3;
+    repeated protoProductoSuplementoFranquicia lspProductoSuplementoFranquicia =4;
+    repeated protoProductoPorListaPrecio lspProductoListaPrecio =5;
+
+}
+
+//Se declaran respuestas
+message DataResponseProducto {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+}
+
+//Modelos
+message protoconfiguracionProducto{
+    string IdFran =3;
+}
+
+message protoProductoFranquicia {
+  int32 idfran = 1;
+  string idProducto = 2;
+  string idNivel1 = 3;
+  string idNivel2 = 4;
+  string idNivel3 = 5;
+  int32 idArticulo = 6;
+  int32 idPresentacion = 7;
+  string nombre = 8;
+  string marcaEconomica = 9;
+  double precioCompra = 10;
+  double precio = 11;
+  double ultimoCosto = 12;
+  double iva = 13;
+  bool inventario = 14;
+  bool inventarioDiario = 15;
+  bool combo = 16;
+  bool otc = 17;
+  bool venta = 18;
+  bool servicio = 19;
+  bool premio = 20;
+  int32 estructuraNegocio = 21;
+  bool aplicaCaducidad = 22;
+  bool aplicaDescuento = 23;
+  bool productoBasico = 24;
+  int32 asignaPuntos = 25;
+  int32 precioPuntos = 26;
+  bool productoGondola = 27;
+  bool estatusRegistro = 28;
+  bool controlado = 29;
+  string descripcionCorta = 30;
+  bool fueraDeCatalogo = 31;
+  bool noPonderado = 32;
+  int32 cantidadPresentacion = 33;
+  string fechaInclusion = 34; // Usar formato ISO 8601
+  string idProductoSat = 35;
+  double ieps = 36;
+  string ultimaActualizacion = 37; // Usar formato ISO 8601
+  bool requiereLote = 38;
+}
+
+message protoProductoSuplementoFranquicia {
+  int32 idFran = 1;
+  string idProducto = 2;
+  string UltimaActualizacion = 3; // Usar formato ISO 8601
+}
+
+message protoProductoPorListaPrecio {
+  int32 idfran = 1;
+  int32 idListaPrecio = 2;
+  string idProducto = 3;
+  double precio = 4;
+  bool estatusRegistro = 5;
+  string ultimaactualizacion = 6; // Usar formato ISO 8601
+}

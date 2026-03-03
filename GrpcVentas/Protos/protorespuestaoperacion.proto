@@ -1,0 +1,253 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcVentas";
+
+package respuestaoperacion;
+//Se declaran los servicios
+service RespuestaOperacionProto {
+    rpc sayOperacionDataByte(OperacionDataByteRequest) returns (DataResponseOperacion);
+    rpc sayTemperaturaDataByte(OperacionDataByteRequest) returns (DataResponseOperacion);
+    rpc sayOperacionAuditoriaDataByte(OperacionDataByteRequest) returns (DataResponseOperacion);
+}
+
+//Se declaran solicitudes
+message OperacionDataByteRequest{
+    bytes compressdata=1;
+}
+
+message lsOperacionDataRequest{
+    string nombrecorto =1;
+    repeated protoconfiguracionoperacion lspOperacionConfiguracion=2;
+    repeated protoConsultaRespuesta lspOperacionConsultaRespuesta=3;
+    repeated protoConfiguracionFarmaciaOperacion lspConfiguracionFarmaciaOperacion=4;
+    repeated protoOperacion lspOperacion=5;
+    repeated protoUsuario lspOperacionUsuario=6;
+    repeated protoCategoriaComercial lspOperacionCategoriaComercial=7;
+    repeated protoCategoriaComercialProducto lspOperacionCategoriaComercialProducto=8;
+    repeated protoConsultaConsultorioTurnoDetalle lspOperacionConsultaConsultorioTurnoDetalle=9;
+    repeated protoOperacionGlobal lspOperacionGlobal=10;
+    repeated protoTomaTemperatura lspTemperatura = 11;
+}
+
+message lsOperacionAuditoriaDataRequest{
+    string nombrecorto =1;
+    repeated protoconfiguracionoperacion lspOperacionConfiguracion=2;
+    repeated protoConsultaRespuesta lspOperacionConsultaRespuesta=3;
+    repeated protoConfiguracionFarmaciaOperacion lspConfiguracionFarmaciaOperacion=4;
+    repeated protoOperacion lspOperacion=5;
+    repeated protoUsuario lspOperacionUsuario=6;
+    repeated protoCategoriaComercial lspOperacionCategoriaComercial=7;
+    repeated protoCategoriaComercialProducto lspOperacionCategoriaComercialProducto=8;
+    repeated protoConsultaConsultorioTurnoDetalle lspOperacionConsultaConsultorioTurnoDetalle=9;
+    repeated protoOperacionGlobal lspOperacionGlobal=10;
+}
+
+message lsTemperaturaRequest{
+    string nombrecorto=1;
+    repeated protoconfiguracionoperacion lspOperacionConfiguracion=2;
+    repeated protoTomaTemperatura lsTomaTemperatura=3;
+}
+
+//Se declaran respuestas
+message DataResponseOperacion {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+}
+
+//Modelos
+message protoconfiguracionoperacion{
+    string fechaInicio =1;
+    string fechaFin =2;
+    string IdFran =3;
+}
+
+message protoConsultaRespuesta {
+  int32 idfran = 1;
+  int32 Id_ConsultorioTurno = 2;
+  int32 Id_ConsultaPregunta = 3;
+  string Respuesta = 4;
+}
+
+message protoConfiguracionFarmaciaOperacion {
+  int32 idfran = 1;
+  string fran = 2;
+  int32 id_configuracion = 3;
+  string id_farmacia = 4;
+  string id_division = 5;
+  string nombre = 6;
+  string id_pais = 7;
+  string pais = 8;
+  string estado = 9;
+  string municipio = 10;
+  string ciudad = 11;
+  int32 codigopostal = 12;
+  string colonia = 13;
+  string calle = 14;
+  string noexterior = 15;
+  string nointerior = 16;
+  string domicilio = 17;
+  string razonsocial = 18;
+  string domiciliofiscal1 = 19;
+  string domiciliofiscal2 = 20;
+  string rfc1 = 21;
+  string rfc2 = 22;
+  string rfc3 = 23;
+  string fechaapertura = 24; // Use string to represent datetime or a custom datetime type
+  double iva = 25;
+  bool transaccionenlinea = 26;
+  string horacierre = 27;
+  bool facturacionelectronica = 28;
+  string ruta_rdis = 29;
+  int32 id_negocio_franquicia = 30;
+  bool requerirasistencia = 31;
+  string webservice_sincroniza = 32;
+  bool tienegondolas = 33;
+  string usuariocontivity = 34;
+  string passwordcontivity = 35;
+  string ipcontivity = 36;
+  bool modificado = 37;
+  bool modificadoiva = 38;
+  string id_usuario = 39;
+  string fecha_captura = 40;
+  string id_almacen = 41;
+  string webservice_ventas = 42;
+  string regimenfiscal = 43;
+  string afiliacionbancaria = 44;
+  string leyendafiscal = 45;
+  bool surtidodirecto = 46;
+  string correoavisoprivacidad = 47;
+  int32 id_categoriaventa = 48;
+  string HoraActualizacion = 49;
+  bool ActivoSap = 50;
+  bool IEPSPOS = 51;
+  int32 Id_Horario = 52;
+}
+
+message protoOperacion {
+  int32 idfran = 1;
+  string FechaOperacion = 2;
+  string FechaHora_Apertura = 3;
+  string Id_Usuario_Apertura = 4;
+  string FechaHora_Cierre = 5;
+  string Id_Usuario_Cierre = 6;
+  string Id_Usuario_Vendedor = 7;
+  string Id_Usuario_Cajero = 8;
+  bool Estatus = 9;
+  double GranTotalApertura = 10;
+  double GranTotalCierre = 11;
+  bool EstatusPV = 12;
+  uint32 EstatusCierre = 13;
+  bool EnvioCierre = 14;
+  string FechaHora_Envio = 15;
+}
+
+message protoUsuario {
+  int32 idfran = 1;
+  string Id_Usuario = 2;
+  string Nombre = 3;
+  int32 Id_Idioma = 4;
+  string LlaveAcceso = 5;
+  double FechaUltimoCambio = 6;
+  bool CambiarLlaveAcceso = 7;
+  bool Temporal = 8;
+  bool EstatusRegistro = 9;
+}
+
+message protoCategoriaComercial {
+  int32 Id_CategoriaComercial = 1;
+  string Nombre = 2;
+  bool EstatusRegistro = 3;
+  string grupo = 4;
+  int32 orden = 5;
+}
+
+message protoCategoriaComercialProducto {
+  int32 Id_CategoriaComercial = 1;
+  string Id_Producto = 2;
+  bool EstatusRegistro = 3;
+}
+
+message protoConsultaConsultorioTurnoDetalle {
+  int32 idfran = 1;
+  int32 Id_ConsultorioTurno = 2;
+  string Id_Consultorio = 3;
+  string Id_Turno = 4;
+  int32 Id_MotivoSinConsultas = 5;
+  bool CorreccionCaptura = 6;
+  string Observaciones = 7;
+  string FechaCaptura = 8;
+  string UsuarioCaptura = 9;
+  string FechaModificacion = 10;
+}
+
+message protoOperacionGlobal {
+  int32 idfran = 1;
+  int32 versiondb = 2;
+}
+
+message protoTomaTemperatura {
+  int32 idfran = 1;
+  int32 id_toma = 2;
+  int32 temperatura = 3;
+  int32 humedad = 4;
+  string fechaoperacion = 5; // Formato: "yyyy-MM-dd HH:mm:ss"
+  string hora_toma = 6;      // Formato: "HH:mm"
+  string usuario_toma = 7;
+  string nombre_usuario = 8;
+}
+
+message protoConfiguracionFarmaciaDatos {
+  int32 idfran = 1;
+  string fran = 2;
+  int32 id_configuracion = 3;
+  string id_farmacia = 4;
+  string id_division = 5;
+  string nombre = 6;
+  string id_pais = 7;
+  string pais = 8;
+  string estado = 9;
+  string municipio = 10;
+  string ciudad = 11;
+  int32 codigopostal = 12;
+  string colonia = 13;
+  string calle = 14;
+  string noexterior = 15;
+  string nointerior = 16;
+  string domicilio = 17;
+  string razonsocial = 18;
+  string domiciliofiscal1 = 19;
+  string domiciliofiscal2 = 20;
+  string rfc1 = 21;
+  string rfc2 = 22;
+  string rfc3 = 23;
+  string fechaapertura = 24;  // Formato: "yyyy-MM-dd HH:mm:ss"
+  float iva = 25;
+  bool transaccionenlinea = 26;
+  string horacierre = 27;     // Formato: "HH:mm"
+  bool facturacionelectronica = 28;
+  string ruta_rdis = 29;
+  int32 id_negocio_franquicia = 30;
+  bool requerirasistencia = 31;
+  string webservice_sincroniza = 32;
+  bool tienegondolas = 33;
+  string usuariocontivity = 34;
+  string passwordcontivity = 35;
+  string ipcontivity = 36;
+  bool modificado = 37;
+  bool modificadoiva = 38;
+  string id_usuario = 39;
+  string fecha_captura = 40;  // Formato: "yyyy-MM-dd HH:mm:ss"
+  string id_almacen = 41;
+  string webservice_ventas = 42;
+  string regimenfiscal = 43;
+  string afiliacionbancaria = 44;
+  string leyendafiscal = 45;
+  bool surtidodirecto = 46;
+  string correoavisoprivacidad = 47;
+  int32 id_categoriaventa = 48;
+  string HoraActualizacion = 49;  // Formato: "HH:mm:ss"
+  bool ActivoSap = 50;
+  bool IEPSPOS = 51;
+  int32 Id_Horario = 52;
+}

@@ -1,0 +1,123 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package respuestacorporativo;
+
+service RespuestaCorporativoProto {
+    rpc sayGetFarmaciasDataByte(FranquiciasDataByteRequest) returns (SoporteDataByteRequest);
+    rpc sayGetCorporativoDataByte(google.protobuf.Empty) returns (DataCorporativoResponse);
+    rpc EnviarNotificacion (NotificacionRequest) returns (NotificacionResponse);
+    rpc JoinClientConnection (JoinRequest) returns (JoinResponse);
+    rpc ExitClientConnection (JoinRequest) returns (JoinResponse);
+}
+
+//Se declaran solicitudes
+message DataCorporativoResponse{
+    repeated protoSoporteDatosCorporativo lsProtoDatosCorporativos=1;
+    int32 estatusCodigo = 2;
+    string mensajeError = 3;
+    string mensajeRespuesta = 4;
+}
+
+message FranquiciasDataByteRequest{
+    string stNombreCliente=1;
+}
+
+message JoinRequest {
+  string idconnectClient = 1;
+  string cliente = 2;
+  string clave = 3;
+  string nombre = 4;
+  int32 operacion = 5;
+}
+
+message JoinResponse {
+  bool success = 1;
+}
+
+message NotificacionRequest {
+  string cliente = 1;
+  string connectionId = 2;
+  int32 operacion = 3;
+  string fechaInicio = 4;
+  string fechaFin = 5;
+}
+
+message NotificacionResponse {
+  string status = 1;
+}
+
+message DataResponseSoporte {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+    repeated protoConnectionClient lsProtoFranquicias=4;
+    repeated protoEnvioControl lsProtoEnvioControl=5;
+}
+
+message SoporteDataByteRequest{
+    bytes compressdata=1;
+}
+
+message protoSoporteDatosCorporativo {
+  int32 corporativo = 1;
+  string dominio = 2;
+  string dmnNCPTD = 3;
+  string cnxn = 4;
+  string nombre = 5;
+  string nombreCorto = 6;
+  string hst = 7;
+  string erp_usr = 8;
+  string erp_pss = 9;
+  string erp_db = 10;
+  string presupuestosHost = 11;
+  string presupuestosUsr = 12;
+  string presupuestosPss = 13;
+  string presupuestosDb = 14;
+  string dsn = 15;
+  string dsn1 = 16;
+  string dsnasistencia = 17;
+  string dsntr = 18;
+  string usr_syncro2 = 19;
+  string pss_syncro2 = 20;
+  int32 max_cnn_syncro2 = 21;
+  string db_syncro2 = 22;
+  string dias_audit = 23;
+  int32 dias_evaluar = 24;
+  string hora_audit = 25;
+  string usr_asis = 26;
+  string pss_asis = 27;
+  bool aplica_monitor = 28;
+  bool aplicaDocker = 29;
+  bool ponderacionYDesabasto = 30;
+  bool aplica_facturacion_en_linea = 31;
+  bool aplica_bitacora = 32;
+  bool facturacion_en_azure = 33;
+  bool actualiza_descuentos_facturacion = 34;
+  string razonsocial = 35;
+  string rfc = 36;
+  string UUID = 37;
+}
+
+message protoConnectionClient {
+  string Cliente = 1;
+  string Clave = 2;
+  string Nombre = 3;
+  string ConnectionId = 4;
+  int32 Id_Operacion = 5;
+  string FechaConnection = 6; // Representado como string en formato ISO-8601 o similar
+  string Internet = 7;
+}
+
+message protoEnvioControl {
+  int32 idFran = 1;           // idfran INT NOT NULL
+  int32 idOperacion = 2;      // idOperacion TINYINT NOT NULL
+  string fechaInicio = 3;     // fechaInicio DATETIME (lo paso como string en ISO 8601)
+  string fechaFin = 4;        // fechaFin DATETIME (lo paso como string en ISO 8601)
+  int32 statusSesion = 5;     // statusSesion TINYINT
+  int32 activo = 6;           // activo TINYINT
+  string ultimoEnvio = 7;     // ultimoEnvio JSON (lo mando como string)
+  double version = 8;         // version DOUBLE
+  string clave = 9 ;
+}

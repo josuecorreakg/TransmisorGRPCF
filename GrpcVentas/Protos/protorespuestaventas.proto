@@ -1,0 +1,268 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcVentas";
+
+package respuestaventas;
+//Se declaran los servicios
+service RespuestaVentasProto {
+    rpc sayVentasDataByte(VentasDataByteRequest) returns (DataResponse);
+    rpc sayHistoricosDataByte(VentasDataByteRequest) returns (DataResponse);
+    rpc sayPrueba(VentasPrueba) returns (DataResponse);
+    rpc sayCostoOpDataByte(VentasDataByteRequest) returns (DataResponse);
+}
+
+//Se declaran solicitudes
+message CostoOpDataRequest{
+    string nombrecorto =1;
+    repeated protoCostoOp lspCostoOp=2;
+}
+
+message VentasDataRequest{
+    string nombrecorto =1;
+    repeated protoconfiguracion lspconfiguracionfranquicia=2;
+    repeated protoVentaDescuento lspventadescuento=3;
+    repeated protoVentaProducto lspventaproducto=4;
+    repeated protoVentaPago lspventapago=5;
+    repeated protoVentum lspventas=6;
+    repeated protoVentafrandium lspventafrandia=7;
+    repeated protoVentaProductoDesglose lspVentaProductoDesglose=8;
+    repeated protoVentaRecetaControlado lspVentaRecetaControlado=9;
+}
+
+message HistoricosDataRequest{
+    string nombrecorto=1;
+    repeated protoconfiguracion lspconfiguracion=2;
+    repeated protoVentafran lspventafran=3;
+    repeated protoVentafrandium lspventafrandia=4;
+}
+
+message VentasPrueba{
+    string nombre=1;
+}
+
+message VentasDataByteRequest{
+    bytes compressdata=1;
+}
+
+//Se declaran respuestas
+message DataResponse {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+}
+
+//Se declaran modelos
+
+// Modelo Franquicia se requiere revisar la tabla de configuración
+message protoconfiguracion{
+    string fechaInicio =1;
+    string fechaFin =2;
+    string IdFran =3;
+}
+
+message protoFranquicia {
+    int32 empresa = 1;
+    string clave = 2;
+    string tipo = 3;
+    string nombre = 4;
+    string regpatron = 5;
+    string domicilio = 6;
+    string estado = 7;
+    string ciudad = 8;
+    string delmun = 9;
+    string colonia = 10;
+    string cp = 11;
+    string tel1 = 12;
+    string tel2 = 13;
+    string fax = 14;
+    double comision = 15;           // double en lugar de decimal
+    double bono = 16;
+    double premiomv = 17;
+    string zona = 18;
+    int32 diapedido = 19;           // byte se representa como int32
+    bool transmite = 20;
+    string supervisor = 21;         // Campo opcional
+    double iva = 22;
+    bool activa = 23;
+    string segnegocio = 24;         // Campo opcional
+    int32 idfran = 25;              // short se representa como int32
+    int32 diaemergente = 26;        // byte? se representa como int32
+    string correo = 27;
+    string fecha_apertura = 28;     // DateOnly representado como string en formato ISO-8601
+    int32 idfran_ant = 29;
+    string sinoperacion = 30;       // DateOnly? como string
+    double version_syncro2 = 31;    // double? se representa como double
+    bool version_syncro2_activa = 32; // bool? como bool
+}
+
+// Modelo VentaDescuento
+message protoVentaDescuento {
+    int32 idfran = 1;
+    int32 id_venta = 2;
+    int32 id_venta_local = 3;
+    int32 id_venta_consecutivo = 4;
+    int32 id_descuento = 5;
+    double descuento = 6;               // double en lugar de decimal
+    int32 producto_basico = 7;
+    string tarjeta = 8;
+    string cliente_nombre = 9;
+    string doctor_nombre = 10;
+    string doctor_cedula = 11;
+    string receta = 12;
+    string referencia = 13;
+    double descuento_porciento = 14;    // Valores opcionales como 0 si no están presentes
+}
+
+// Modelo Ventafran
+message protoVentafran {
+    int32 idfran = 1;
+    string mes = 2;
+    string ano = 3;
+    double venta = 4;
+    double venta_pe = 5;
+    double venta_pn = 6;
+    double cepip = 7;
+    double vitaminas = 8;
+    double similares = 9;
+    double naturistas = 10;
+    double gravados = 11;
+    int32 clientes = 12;
+    double descuentos = 13;
+    double iva = 14;
+    double prod_premio = 15;
+    double iva_suple = 16;
+    double iva_suple_t = 17;
+    int32 conmedm = 18;
+    int32 conmedv = 19;
+    int32 conmedn = 20;
+    int32 conmedx = 21;
+    double part_vta = 22;
+    int32 idcat = 23;
+}
+
+// Modelo Ventafrandium
+message protoVentafrandium {
+    int32 idfran = 1;
+    string mes = 2;
+    string ano = 3;
+    int32 dia = 4;
+    double venta = 5;
+    double naturistas = 6;
+    double inventario = 7;
+    double inventario_compra = 8;
+    string fecha_calculo = 9;           // Para fechas, usa formato ISO-8601 en string
+}
+
+// Modelo VentaPago
+message protoVentaPago {
+    int32 idfran = 1;
+    int32 id_venta = 2;
+    int32 id_venta_local = 3;
+    int32 id_venta_consecutivo = 4;
+    string id_forma_pago = 5;
+    double importe = 6;                 // double para decimal en gRPC
+    double tipo_cambio = 7;
+}
+
+// Modelo VentaProducto
+message protoVentaProducto {
+    int32 idfran = 1;
+    int32 id_venta = 2;
+    int32 id_venta_local = 3;
+    int32 id_venta_consecutivo = 4;
+    string id_producto = 5;
+    double cantidad = 6;                  // double en lugar de decimal
+    double precio = 7;
+    double iva = 8;
+    double descuento = 9;
+    double descuento_porciento = 10;
+    int32 puntos = 11;
+    double iva_porciento = 12;
+    double iva_importe = 13;
+    int32 posicion = 14;
+    bool premio = 15;                     // booleano opcional como false si no está presente
+}
+
+// Modelo VentaProductoDesglose
+message protoVentaProductoDesglose {
+    int32 idfran = 1;
+    int32 id_venta = 2;
+    int32 id_venta_local = 3;
+    int32 id_venta_consecutivo = 4;
+    string id_producto = 5;
+    double cantidad = 6;
+    double precio = 7;
+    double iva = 8;
+    double importe = 9;
+}
+
+// Modelo VentaRecetaControlado
+message protoVentaRecetaControlado {
+    int32 idfran = 1;
+    string id_receta = 2;
+    int32 id_venta = 3;
+    uint64 retenerreceta = 4;             // ulong como uint64 en Protobuf
+    string fechacaptura = 5;               // Fechas como string en formato ISO-8601
+    int32 id_medico = 6;
+    string nombre = 7;
+    string cedula = 8;
+    string domicilio = 9;
+    string tipo = 10;
+}
+
+//Modelo Ventas
+message protoVentum {
+    int32 idfran = 1;
+    int32 id_venta = 2;
+    int32 id_venta_local = 3;
+    int32 id_venta_consecutivo = 4;
+    int32 id_movimiento = 5;
+    int32 id_venta_registradora = 6;
+    int32 id_registradora_venta = 7;
+    int32 id_registradora_cobro = 8;
+    string id_usuario_venta = 9;
+    string id_usuario_cobro = 10;
+    string id_usuario_cancelacion = 11;
+    string fecha_hora_venta = 12;       // Para fechas y horas, usa strings en formato ISO-8601 o Unix timestamp
+    string fecha_hora_cobro = 13;
+    string fecha_hora_cancelacion = 14;
+    string fecha_operacion = 15;
+    int32 tipo_venta = 16;
+    int32 tipo_operacion = 17;
+    string id_venta_referencia = 18;
+    bool receta = 19;
+    bool antes_total = 20;
+    int32 estatus = 21;
+    int32 historico = 22;
+    int32 sincroniza = 23;
+    int32 id_cliente = 24;
+    int32 puntos_iniciales = 25;
+    int32 puntos_finales = 26;
+    int32 puntos_acumulados = 27;
+    int32 restriccion = 28;
+}
+
+// Define el mensaje que representa el modelo CostoOp
+message protoCostoOp {
+  int32 id_fran = 1;
+  string clave = 2;
+  int32 id_producto = 3;
+  string producto = 4;
+  string fecha_operacion = 5; // ISO8601 string (ej. "2025-06-18T15:30:00Z")
+  double precio_venta = 6;
+  int32 inventario_actual = 7;
+  int32 ventas_dia1 = 8;
+  int32 prom_dia1 = 9;
+  int32 ventas_dia2 = 10;
+  int32 prom_dia2 = 11;
+  int32 ventas_dia3 = 12;
+  int32 prom_dia3 = 13;
+  int32 ventas_dia4 = 14;
+  int32 prom_dia4 = 15;
+  int32 ventas_dia5 = 16;
+  int32 prom_dia5 = 17;
+  int32 ventas_dia6 = 18;
+  int32 prom_dia6 = 19;
+  int32 ventas_dia7 = 20;
+  int32 prom_dia7 = 21;
+}

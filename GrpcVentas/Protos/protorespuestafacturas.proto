@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcVentas";
+
+package respuestafacturas;
+
+service RespuestaFacturasProto {
+    rpc sayFacturaDataByte(FacturasDataByteRequest) returns (DataResponseFacturas);
+}
+
+//Se declaran solicitudes
+message FacturasDataByteRequest{
+    bytes compressdata=1;
+}
+
+message lsFacturaDataRequest{
+    string nombrecorto =1;
+    repeated protoconfiguracionFacturas lspFacturaConfiguracion=2;
+    repeated protoFacturacionFactura lspFacturacionfactura=3;
+    repeated protoFacturacionReferencium lspFacturacionreferencium=4;
+}
+
+//Se declaran respuestas
+message DataResponseFacturas {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+}
+
+//Modelos
+message protoconfiguracionFacturas{
+    string fechaInicio =1;
+    string fechaFin =2;
+    string IdFran =3;
+}
+
+message protoFacturacionFactura {
+    int32 idfran = 1;
+    string serie = 2;
+    int32 folio = 3;
+    string idCliente = 4;
+    bool global = 5;
+    uint32 estatus = 6;
+    string fechaOperacion = 7; // Formato ISO 8601 o timestamp
+    string fechaFacturacion = 8; // Formato ISO 8601 o timestamp
+    string fechaCancelacion = 9; // Formato ISO 8601 o timestamp
+    bool electronica = 10;
+    uint32 reimpresiones = 11;
+    bool notaCredito = 12;
+    bool fundacion = 13;
+    bool franquicia = 14;
+    bool correo = 15;
+    int32 contadorItems = 16;
+    sint32 sifeEstatus = 17;
+}
+
+message protoFacturacionReferencium {
+    int32 idfran = 1;
+    string serie = 2;
+    int32 folio = 3;
+    int32 idVenta = 4;
+    int32 idVentaLocal = 5;
+    int32 idVentaConsecutivo = 6;
+    string referenciaTicket = 7;
+    double subTotalNeto = 8;
+    double descuento = 9;
+    double totalNeto = 10;
+    double iva = 11;
+    double granTotal = 12;
+}
+

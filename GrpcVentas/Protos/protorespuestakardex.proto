@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcVentas";
+
+package respuestakardex;
+//Se declaran los servicios
+service RespuestaKardexProto {
+    rpc sayKardexDataByte(KardexDataByteRequest) returns (DataResponseKardex);
+    rpc sayKardexPrecioPromedioDataByte(KardexDataByteRequest) returns (DataResponseKardex);
+}
+
+//Se declaran solicitudes
+message KardexDataRequest{
+    string nombrecorto =1;
+    repeated protoconfiguracionKardex lspconfiguracionKardex=2;
+    repeated protoErpCiKardex lspCiKardex=3;
+    repeated protoErpCiKardexCompras LspCiKardexCompras=4;
+}
+
+message KardexPrecioPromedioDataRequest{
+    string nombrecorto =1;
+    repeated protoKardexControlMensualEntry lspKardexControlMensual=2;
+}
+
+message KardexDataByteRequest{
+    bytes compressdata=1;
+}
+
+//Se declaran respuestas
+message DataResponseKardex {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+}
+
+//Se declaran modelos
+message protoconfiguracionKardex{
+    string fechaInicio =1;
+    string fechaFin =2;
+    string IdFran =3;
+}
+
+message protoErpCiKardex {
+    int32 id_fran = 1;
+    string clave = 2;
+    string franquicia = 3;
+    string id_producto = 4;
+    string producto = 5;
+    string fecha_operacion = 6;  // Utilizar formato string para datetime
+    double precio_venta = 7;     // decimal -> double
+    double precio_venta_sin_iva = 8; // decimal -> double
+    double precio_compra = 9;    // decimal -> double
+    int32 inventario_inicial = 10;
+    int32 entradas_traspaso = 11;
+    int32 salidas_traspaso = 12;
+    int32 entradas_ajustes = 13;
+    int32 salidas_ajustes = 14;
+    int32 entrada_compra_proveedores = 15;
+    int32 entradas_compras = 16;
+    int32 salidas_notas_credito = 17;
+    int32 salidas_ventas = 18;
+    int32 entrada_devoluciones = 19;
+    int32 inventario_final = 20;
+    int32 salidasajustesdegustacionpiezas=21;
+    int32 salidasajustessiniestrospiezas=22;
+}
+
+message protoErpCiKardexCompras {
+  int32 Idfran = 1;
+  int32 IdSurtido = 2;
+  string FechaOperacion = 3;
+  string FechaHoraCaptura = 4;
+  string FechaOperacionDescarga = 5;
+  string Factura_Fiscal = 6;
+  double Total = 7;
+  string Signo = 8;
+  double TotalComprasSoloVenta = 9;
+}
+
+message protoKardexControlMensualEntry {
+  int32 id_fran = 1;
+  string clave = 2;
+  string franquicia = 3;
+  string id_producto = 4;
+  string producto = 5;
+  string mes = 6;
+  string periodo = 7;
+  int32 inventario_inicial_piezas = 8;
+  int32 inventario_final_piezas = 9;
+  double compras_similares_monto = 10;
+  int32 compras_similares_piezas = 11;
+  double compras_similares_costo_unitario = 12;
+  int32 entrada_compra_proveedores_piezas = 13;
+  int32 entradas_traspaso_piezas = 14;
+  int32 devoluciones_por_venta_piezas = 15;
+  int32 entradas_ajustes_piezas = 16;
+  int32 total_entrada_piezas = 17;
+  int32 salidas_por_venta_piezas = 18;
+  int32 salidas_traspaso_piezas = 19;
+  int32 salidas_ajustes_piezas = 20;
+  int32 salidas_ajustes_degustacion_piezas = 21;
+  int32 salidas_ajustes_siniestros_piezas = 22;
+  int32 devoluciones_similares_piezas = 23;
+  int32 total_salida_piezas = 24;
+}

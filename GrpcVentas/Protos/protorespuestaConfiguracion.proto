@@ -1,0 +1,88 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcVentas";
+
+package respuestaConfiguracion;
+
+service RespuestaConfiguracionProto {
+    rpc saySETConfiguracionDataByte(ConfiguracionDataByteRequest) returns (DataResponseConfiguracion);
+    rpc saySETDescargaDataByte(ConfiguracionDataByteRequest) returns (DataResponseConfiguracion);
+}
+
+message DataResponseConfiguracion {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+    bytes compressdata=4;
+}
+
+message ConfiguracionDataByteRequest{
+    bytes compressdata=1;
+}
+
+message protodataConfiguracion{
+    string nombrecorto=1;
+    string clave=2;
+    string version=3;
+}
+
+message protodatadescargaConfiguracion{
+    string nombrecorto=1;
+    string clave=2;
+    string nombrearchivo=3;
+}
+
+message protoListaOperaciones {
+    repeated protoDeskCatalogoOperacion lsprotoOperaciones = 1;
+    repeated protoTvTransmision lsprototransmision = 2;
+    double version=3;
+}
+
+message protoDeskCatalogoOperacion {
+  int32 idOperacion = 1;
+  string Nombre = 2;
+  int32 Estatus = 3;
+  int32 DiasAuditar = 4;
+  int32 Frecuencia = 5;
+  string HoraInicio = 6;
+  string HoraFin = 7;
+  int32 NumeroTransmision = 8;
+}
+
+message protoCatSistemas {
+  int32 idSistema = 1;
+  string nombreSistema = 2;
+  double versionGral = 3;
+}
+
+message protoControlVersion {
+  int32 idSistema = 1;
+  int32 idFran = 2;
+  double version = 3;
+  string fechaLiberacion = 4;
+}
+
+message protoLiberacionEjecutable {
+  int32 idfran = 1;
+  string clave = 2;
+  string nombrearchivo = 3;
+  string fechaliberacion = 4;
+  string fechainstalacion = 5;
+  string ruta = 6;
+  EstatusLiberacion estatus = 7;
+}
+
+message protoTvTransmision {
+  int32 idfran = 1;
+  int32 idoperacion = 2;
+  string fechainicio = 3;
+  string fechafin = 4;
+  int32 status = 5;
+}
+
+enum EstatusLiberacion {
+  PENDIENTE = 0; 
+  INSTALADO = 1;
+  LEIDO = 2;
+  ERROR = 3;
+}

@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcVentas";
+
+package respuestausuario;
+//Se declaran los servicios
+service RespuestaUsuarioProto {
+    rpc sayUsuarioDataByte(UsuarioDataByteRequest) returns (DataResponseUsuario);
+}
+
+//Se declaran solicitudes
+message UsuarioDataByteRequest{
+    bytes compressdata=1;
+}
+
+message lsUsuarioDataRequest{
+    string nombrecorto =1;
+    repeated protoconfiguracionUsuario lspUsuarioConfiguracion=2;
+    repeated protoSeguridadCategoria lspUsuarioSeguridadCategoria=3;
+    repeated protoSeguridadRol lspUsuarioSeguridadRol=4;
+    repeated protoSeguridadTarea lspUsuarioSeguridadTarea=5;
+    repeated protoUsuarioRol lspUsuarioRol=6;
+    repeated protoUsuarioPorRol lspUsuarioPorRol=7;
+}
+
+//Se declaran respuestas
+message DataResponseUsuario {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+}
+
+//Modelos
+message protoconfiguracionUsuario{
+    string IdFran =3;
+}
+
+message protoSeguridadCategoria {
+  int32 Idfran = 1;
+  int32 Id_categoria = 2;
+  string Nombre = 3;
+  int32 Orden = 4;
+  int32 Reporte = 5;
+}
+
+// Modelo para erp_spos_seguridad_rol
+message protoSeguridadRol {
+  int32 Idfran = 1;
+  int32 Id_Rol = 2;
+  int32 Id_Categoria = 3;
+  int32 NivelSeguridad = 4;
+}
+
+// Modelo para erp_spos_seguridad_tarea
+message protoSeguridadTarea {
+  int32 Idfran = 1;
+  int32 Id_tarea = 2;
+  int32 Id_Categoria = 3;
+  string Nombre = 4;
+  int32 Orden = 5;
+  int32 Validar = 6;
+  int32 Permitir = 7;
+  int32 Consultar = 8;
+  int32 Crear = 9;
+  int32 Modificar = 10;
+  int32 Eliminar = 11;
+  int32 Imprimir = 12;
+  int32 Auditoria = 13;
+}
+
+// Modelo para erp_spos_usuario_rol
+message protoUsuarioRol {
+  int32 Idfran = 1;
+  int32 Id_Rol = 2;
+  string Nombre = 3;
+  string EstatusRegistro = 4;
+}
+
+// Modelo para erp_spos_usuarioporrol
+message protoUsuarioPorRol {
+  int32 Idfran = 1;
+  string Id_Usuario = 2;
+  int32 Id_Rol = 3;
+}

@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcVentas";
+
+package respuestapedido;
+//Se declaran los servicios
+service RespuestaPedidoProto {
+    rpc sayPedidoDataByte(PedidosDataByteRequest) returns (DataResponsePedido);
+}
+
+//Se declaran solicitudes
+message PedidosDataByteRequest{
+    bytes compressdata=1;
+}
+
+message lsPedidoDataRequest{
+    string nombrecorto =1;
+    repeated protoconfiguracionPedido lspconfiguracionpedido=2;
+    repeated protoPedido lspPedido=3;
+    repeated protoPedidoDetalle lspPedidoDetalle=4;
+}
+
+//Se declaran respuestas
+message DataResponsePedido {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+}
+
+//Modelos
+message protoconfiguracionPedido{
+    string fechaInicio =1;
+    string fechaFin =2;
+    string IdFran =3;
+}
+
+message protoPedido {
+    int32 idfran = 1;
+    int32 idPedido = 2;
+    string fechaOperacion = 3; // Representado como timestamp (Unix time)
+    string idUsuario = 4;
+    bool semanal = 5;
+    string fechaHoraCaptura = 6; // Representado como timestamp (Unix time)
+    int32 estatus = 7;
+    string observacion = 8;
+    int32 dias = 9;
+    int32 adicionales = 10;
+    string fechaPedido = 11; // Representado como timestamp (Unix time)
+    bool incluirMenudeo = 12;
+    bool definitivo = 13;
+    string folioconfirmacion = 14;
+    string foliopedido = 15;
+    string sincref = 16;
+    double estimado = 17;
+    bool pedidoemergente = 18;
+    string idAlmacenSurtido = 19;
+    int32 idFinanciamiento = 20;
+}
+
+message protoPedidoDetalle {
+    int32 idfran = 1;
+    int32 idPedido = 2;
+    string idProducto = 3;
+    string ultimaVenta = 4; // Representado como timestamp (Unix time)
+    int32 sugerencia = 5;
+    int32 pedido = 6;
+    int32 existenciaTeorica = 7;
+    double costoUnitario = 8; // Para manejar valores decimales
+}

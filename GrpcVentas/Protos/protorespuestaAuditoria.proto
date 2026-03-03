@@ -1,0 +1,158 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcVentas";
+
+package respuestaAuditoria;
+
+service RespuestaAuditoriaProto {
+    rpc sayEnvioAuditoriaDataByte(AuditoriaDataByteRequest) returns (DataResponseAuditoria);
+    rpc sayCrearAuditoriaDataByte(AuditoriaDataByteRequest) returns (DataResponseAuditoria);
+}
+
+//Se declaran solicitudes
+message AuditoriaDataByteRequest{
+    bytes compressdata=1;
+}
+
+message DataResponseAuditoria {
+    string MensajeRespuesta=1;
+    int32 EstatusCodigo=2;
+    string MensajeError=3;
+    bytes compressdata=4;
+}
+
+message AuditoriaDataRequest{
+    string nombrecorto =1;
+    repeated protoTvEnvioAuditoria lspTvEnvioAuditoria=2;
+}
+
+message CrearAuditoriaDataRequest{
+    string nombrecorto =1;
+    string clave=2;
+    int32 id_operacion=3;
+}
+
+message AuditoriasDataRequest{
+    string nombrecorto =1;
+    string clave =2;
+    string anio =3;
+    string mes=4;
+    int32 id_operacion=5;
+    string dia=6;
+}
+
+message protoTvEnvioAuditoria {
+  int32 idfran = 1;
+  int32 anio = 2;
+  int32 mes = 3;
+  int32 id_operacion = 4;
+  int32 dia1 = 5;
+  int32 dia2 = 6;
+  int32 dia3 = 7;
+  int32 dia4 = 8;
+  int32 dia5 = 9;
+  int32 dia6 = 10;
+  int32 dia7 = 11;
+  int32 dia8 = 12;
+  int32 dia9 = 13;
+  int32 dia10 = 14;
+  int32 dia11 = 15;
+  int32 dia12 = 16;
+  int32 dia13 = 17;
+  int32 dia14 = 18;
+  int32 dia15 = 19;
+  int32 dia16 = 20;
+  int32 dia17 = 21;
+  int32 dia18 = 22;
+  int32 dia19 = 23;
+  int32 dia20 = 24;
+  int32 dia21 = 25;
+  int32 dia22 = 26;
+  int32 dia23 = 27;
+  int32 dia24 = 28;
+  int32 dia25 = 29;
+  int32 dia26 = 30;
+  int32 dia27 = 31;
+  int32 dia28 = 32;
+  int32 dia29 = 33;
+  int32 dia30 = 34;
+  int32 dia31 = 35;
+}
+
+message TvHashAuditoria {
+  string idfran = 1;
+  int32 anio = 2;
+  int32 mes = 3;
+  int32 idOperacion = 4;
+  string hash1 = 5;
+  string hash2 = 6;
+  string hash3 = 7;
+  string hash4 = 8;
+  string hash5 = 9;
+  string hash6 = 10;
+  string hash7 = 11;
+  string hash8 = 12;
+  string hash9 = 13;
+  string hash10 = 14;
+  string hash11 = 15;
+  string hash12 = 16;
+  string hash13 = 17;
+  string hash14 = 18;
+  string hash15 = 19;
+  string hash16 = 20;
+  string hash17 = 21;
+  string hash18 = 22;
+  string hash19 = 23;
+  string hash20 = 24;
+  string hash21 = 25;
+  string hash22 = 26;
+  string hash23 = 27;
+  string hash24 = 28;
+  string hash25 = 29;
+  string hash26 = 30;
+  string hash27 = 31;
+  string hash28 = 32;
+  string hash29 = 33;
+  string hash30 = 34;
+  string hash31 = 35;
+  int32 contador1 = 36;
+  int32 contador2 = 37;
+  int32 contador3 = 38;
+  int32 contador4 = 39;
+  int32 contador5 = 40;
+  int32 contador6 = 41;
+  int32 contador7 = 42;
+  int32 contador8 = 43;
+  int32 contador9 = 44;
+  int32 contador10 = 45;
+  int32 contador11 = 46;
+  int32 contador12 = 47;
+  int32 contador13 = 48;
+  int32 contador14 = 49;
+  int32 contador15 = 50;
+  int32 contador16 = 51;
+  int32 contador17 = 52;
+  int32 contador18 = 53;
+  int32 contador19 = 54;
+  int32 contador20 = 55;
+  int32 contador21 = 56;
+  int32 contador22 = 57;
+  int32 contador23 = 58;
+  int32 contador24 = 59;
+  int32 contador25 = 60;
+  int32 contador26 = 61;
+  int32 contador27 = 62;
+  int32 contador28 = 63;
+  int32 contador29 = 64;
+  int32 contador30 = 65;
+  int32 contador31 = 66;
+}
+
+message TvEnvioOperacion {
+  int32 idOperacion = 1;
+  string nombre = 2;
+  int32 frecuencia = 3;
+  string horaInicio = 4;
+  string horaFin = 5;
+}
+
