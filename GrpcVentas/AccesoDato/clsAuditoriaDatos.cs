@@ -21,60 +21,35 @@ namespace GrpcVentas.AccesoDato
 
             string nombreColumnaDia = $"dia{stDia}";
 
-            string sQuery = $@"INSERT INTO tv_envioauditoria 
+            string sQuery = $@"INSERT INTO tv_envioauditoria
                                 (idfran, anio, mes, idOperacion, {nombreColumnaDia})
                                 VALUES (@pIdfran, @pAnio, @pMes, @pIdOperacion, 1)
                                 ON DUPLICATE KEY UPDATE
-                                {nombreColumnaDia} = 1;";
+                                {nombreColumnaDia} = 1";
 
-            using (var context = new VentasContext(objCorporativo))
+            try
             {
-                using (var transaction = context.Database.BeginTransaction())
+                using (var context = new VentasContext(objCorporativo))
                 {
-                    try
-                    {
-                        var connection = context.Database.GetDbConnection() as MySqlConnection;
-                        var mySqlTransaction = transaction.GetDbTransaction() as MySqlTransaction;
+                    context.Database.ExecuteSqlRaw(sQuery,
+                        new MySqlParameter("@pIdfran", objfranquicia.Idfran.ToString()),
+                        new MySqlParameter("@pAnio", stAnio),
+                        new MySqlParameter("@pMes", stMes),
+                        new MySqlParameter("@pIdOperacion", iIdoperacion));
 
-                        if (connection == null || mySqlTransaction == null)
-                        {
-                            throw new InvalidOperationException("Esta operación requiere una conexión a MySQL.");
-                        }
+                    DateTime dtfechaFininsert = clsGeneral.ConvertirAZonaHoraria(DateTime.Now);
 
-                        var commandAuditoria = connection.CreateCommand();
-                        commandAuditoria.Transaction = mySqlTransaction;
-                        commandAuditoria.CommandTimeout = 60;
+                    string sQueryTV = "UPDATE tv_enviocontrol SET FechaInicio = @p0, fechaFin = @p1, version = 1 WHERE idFran = @p2 AND idOperacion = @p3";
+                    context.Database.ExecuteSqlRaw(sQueryTV, dtInicioProceso, dtfechaFininsert, objfranquicia.Idfran, iIdoperacion);
 
-                        commandAuditoria.CommandText = sQuery;
-
-                        commandAuditoria.Parameters.AddWithValue("@pIdfran", objfranquicia.Idfran);
-                        commandAuditoria.Parameters.AddWithValue("@pAnio", stAnio);
-                        commandAuditoria.Parameters.AddWithValue("@pMes", stMes);
-                        commandAuditoria.Parameters.AddWithValue("@pIdOperacion", iIdoperacion);
-
-                        int rowsAffected = commandAuditoria.ExecuteNonQuery();
-
-                        transaction.Commit();
-
-                        string mensaje = (rowsAffected > 0)
-                            ? "Registro de auditoria procesado correctamente (INSERT o UPDATE)."
-                            : "Advertencia: La operación no afectó filas. Revisar.";
-
-
-                        DateTime dtfechaFininsert = clsGeneral.ConvertirAZonaHoraria(DateTime.Now);
-
-                        string sQueryTV = "UPDATE tv_enviocontrol SET FechaInicio = @p0, fechaFin = @p1, version = 1 WHERE idFran = @p2 AND idOperacion = @p3";
-                        context.Database.ExecuteSqlRaw(sQueryTV, dtInicioProceso, dtfechaFininsert, objfranquicia.Idfran, iIdoperacion);
-
-                        objRespuesta = clsRespuestaFactory.CrearRespuestaExito<DataResponseAuditoria>(mensaje);
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        objRespuesta = clsRespuestaFactory.CrearRespuestaError<DataResponseAuditoria>("Error al insertar y/o actualizar información en clsAuditoriaDatos - InsertarAuditoriasManual: " + ex.Message);
-                    }
+                    objRespuesta = clsRespuestaFactory.CrearRespuestaExito<DataResponseAuditoria>("Registro de auditoria procesado correctamente.");
                 }
             }
+            catch (Exception ex)
+            {
+                objRespuesta = clsRespuestaFactory.CrearRespuestaError<DataResponseAuditoria>("Error al insertar y/o actualizar información en clsAuditoriaDatos - InsertarAuditoriasManual: " + ex.Message);
+            }
+
             return objRespuesta;
         }
 
