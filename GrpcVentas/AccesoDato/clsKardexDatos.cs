@@ -49,7 +49,9 @@ namespace GrpcVentas.AccesoDato
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.IdFran);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.Clave);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.Franquicia);
-                                cmd.Parameters.AddWithValue($"@p{paramIndex++}", int.Parse(item.IdProducto));
+                                if (!int.TryParse(item.IdProducto, out int idProducto))
+                                    throw new InvalidOperationException($"IdProducto no numérico: {item.IdProducto}");
+                                cmd.Parameters.AddWithValue($"@p{paramIndex++}", idProducto);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.Producto);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.FechaOperacion);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", (object)item.PrecioVenta ?? DBNull.Value);
@@ -109,13 +111,15 @@ namespace GrpcVentas.AccesoDato
 
                         transaction.Commit();
 
-                        DateTime dtfechaFininsert = clsGeneral.ConvertirAZonaHoraria(DateTime.Now);
-
-                        // UPDATE corregido y seguro.
-                        string sQuery = "UPDATE tv_enviocontrol SET FechaInicio = @p0, fechaFin = @p1, version = 1 WHERE idFran = @p2 AND idOperacion = 9";
-                        context.Database.ExecuteSqlRaw(sQuery, dtInicioProceso, dtInicioProceso, objfranquicia.Idfran);
-
                         objRespuesta = clsRespuestaFactory.CrearRespuestaExito<DataResponseKardex>("La información se ha guardado correctamente");
+
+                        try
+                        {
+                            DateTime dtfechaFininsert = clsGeneral.ConvertirAZonaHoraria(DateTime.Now);
+                            string sQuery = "UPDATE tv_enviocontrol SET FechaInicio = @p0, fechaFin = @p1, version = 1 WHERE idFran = @p2 AND idOperacion = 9";
+                            context.Database.ExecuteSqlRaw(sQuery, dtInicioProceso, dtInicioProceso, objfranquicia.Idfran);
+                        }
+                        catch { }
                     }
                     catch (Exception ex)
                     {
@@ -255,11 +259,14 @@ namespace GrpcVentas.AccesoDato
 
                             transaction.Commit();
 
-                            // Actualizar tabla de control de envíos (Operación 9 asumiendo que es Control Mensual)
-                            string sQuery = "UPDATE tv_enviocontrol SET FechaInicio = @p0, fechaFin = @p1, version = 1 WHERE idFran = @p2 AND idOperacion = 9";
-                            context.Database.ExecuteSqlRaw(sQuery, dtInicioProceso, DateTime.Now, objfranquicia.Idfran);
-
                             objRespuesta = clsRespuestaFactory.CrearRespuestaExito<DataResponseKardex>("Control mensual guardado correctamente.");
+
+                            try
+                            {
+                                string sQuery = "UPDATE tv_enviocontrol SET FechaInicio = @p0, fechaFin = @p1, version = 1 WHERE idFran = @p2 AND idOperacion = 9";
+                                context.Database.ExecuteSqlRaw(sQuery, dtInicioProceso, DateTime.Now, objfranquicia.Idfran);
+                            }
+                            catch { }
                         }
                         catch (Exception ex)
                         {
@@ -270,13 +277,11 @@ namespace GrpcVentas.AccesoDato
 
                 return objRespuesta;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return objRespuesta;
+                return clsRespuestaFactory.CrearRespuestaError<DataResponseKardex>("Error de conexión en InsertarControlMensualManual: " + ex.Message);
             }
         }
-
-
 
 
     }
