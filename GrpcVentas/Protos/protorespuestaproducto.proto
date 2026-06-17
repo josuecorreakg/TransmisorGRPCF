@@ -19,6 +19,7 @@ message lsProductoDataRequest{
     repeated protoProductoFranquicia lspProductoFranquicia =3;
     repeated protoProductoSuplementoFranquicia lspProductoSuplementoFranquicia =4;
     repeated protoProductoPorListaPrecio lspProductoListaPrecio =5;
+    repeated protoProductoClasificacion lspProductoClasificacion =6;
 
 }
 
@@ -88,4 +89,13 @@ message protoProductoPorListaPrecio {
   double precio = 4;
   bool estatusRegistro = 5;
   string ultimaactualizacion = 6; // Usar formato ISO 8601
+}
+
+message protoProductoClasificacion {
+  string idProducto = 1;
+  string idNivel3 = 2;
+  string nombreCategoria = 3;
+  string nombreProducto = 4;
+  double precioVenta = 5;
+  double precioCompra = 6;
 }

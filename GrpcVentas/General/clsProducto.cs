@@ -25,6 +25,7 @@ namespace GrpcVentas.General
                 List<protoProductoFranquicia> lsproductoFranquicia = request.LspProductoFranquicia.ToList();
                 List<protoProductoSuplementoFranquicia> lsProductoSuplementoFranquicia = request.LspProductoSuplementoFranquicia.ToList();
                 List<protoProductoPorListaPrecio> lsProductoPorListaPrecio = request.LspProductoListaPrecio.ToList();
+                List<protoProductoClasificacion> lsProductoClasificacion = request.LspProductoClasificacion.ToList();
 
                 ////Se actualiza el id de la sucursal
                 string Sclave = lsconfiguracion[0].IdFran.ToString();
@@ -40,8 +41,8 @@ namespace GrpcVentas.General
                         lsProductoPorListaPrecio = clsGeneral.ActualizarFecha(lsProductoPorListaPrecio, fechaNow.ToString("yyyy-MM-dd HH:mm:ss"));
                         lsproductoFranquicia = clsGeneral.ActualizarFecha(lsproductoFranquicia, fechaNow.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                        objrespuesta = clsProductoDatos.InsertarProductoManual(lsproductoFranquicia, lsProductoSuplementoFranquicia, lsProductoPorListaPrecio, objCorporativo, objfranquicia, dtInicioProceso);
-                    }  
+                        objrespuesta = clsProductoDatos.InsertarProductoManual(lsproductoFranquicia, lsProductoSuplementoFranquicia, lsProductoPorListaPrecio, lsProductoClasificacion, objCorporativo, objfranquicia, dtInicioProceso);
+                    }
                 }
                 else
                 {

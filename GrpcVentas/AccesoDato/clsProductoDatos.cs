@@ -10,7 +10,7 @@ namespace GrpcVentas.AccesoDato
 {
     public class clsProductoDatos
     {
-        public static DataResponseProducto InsertarProductoManual(List<protoProductoFranquicia> lsProductoFranquicia, List<protoProductoSuplementoFranquicia> lsProductoSuplementoFranquicia, List<protoProductoPorListaPrecio> lsProductoPorListaPrecio, DatosCorporativo objCorporativo, Franquicia objfranquicia, DateTime dtInicioProceso)
+        public static DataResponseProducto InsertarProductoManual(List<protoProductoFranquicia> lsProductoFranquicia, List<protoProductoSuplementoFranquicia> lsProductoSuplementoFranquicia, List<protoProductoPorListaPrecio> lsProductoPorListaPrecio, List<protoProductoClasificacion> lsProductoClasificacion, DatosCorporativo objCorporativo, Franquicia objfranquicia, DateTime dtInicioProceso)
         {
             DataResponseProducto objRespuesta = new DataResponseProducto();
 
@@ -123,6 +123,28 @@ namespace GrpcVentas.AccesoDato
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", (object)item.Precio ?? DBNull.Value);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", (object)item.Estatusregistro ?? DBNull.Value);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", (object)item.Ultimaactualizacion ?? DBNull.Value);
+                            }
+                            cmd.CommandText = sb.ToString().TrimEnd(',') + ";";
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // ---- 4. Inserción Masiva para producto_clasificacion ----
+                        if (lsProductoClasificacion.Count > 0)
+                        {
+                            var cmd = connection.CreateCommand();
+                            cmd.Transaction = mySqlTransaction;
+                            cmd.CommandTimeout = 180;
+                            var sb = new StringBuilder("REPLACE INTO producto_clasificacion (Id_Producto, Id_Nivel3, Nombre_Categoria, Nombre_Producto, Precio_Venta, Precio_Compra) VALUES ");
+                            var paramIndex = 0;
+                            foreach (var item in lsProductoClasificacion)
+                            {
+                                sb.Append($"(@p{paramIndex}, @p{paramIndex + 1}, @p{paramIndex + 2}, @p{paramIndex + 3}, @p{paramIndex + 4}, @p{paramIndex + 5}),");
+                                cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.IdProducto);
+                                cmd.Parameters.AddWithValue($"@p{paramIndex++}", (object)item.IdNivel3 ?? DBNull.Value);
+                                cmd.Parameters.AddWithValue($"@p{paramIndex++}", (object)item.NombreCategoria ?? DBNull.Value);
+                                cmd.Parameters.AddWithValue($"@p{paramIndex++}", (object)item.NombreProducto ?? DBNull.Value);
+                                cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.PrecioVenta);
+                                cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.PrecioCompra);
                             }
                             cmd.CommandText = sb.ToString().TrimEnd(',') + ";";
                             cmd.ExecuteNonQuery();
