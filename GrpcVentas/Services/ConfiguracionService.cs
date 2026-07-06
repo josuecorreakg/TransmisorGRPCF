@@ -37,5 +37,51 @@ namespace GrpcVentas.Services
             }
         }
 
+        public override async Task<protoRespuestaLiberaciones> sayGETLiberacionesPendientes(protodataConfiguracion request, ServerCallContext context)
+        {
+            protoRespuestaLiberaciones objrespuesta = new protoRespuestaLiberaciones();
+            try
+            {
+                DatosCorporativo objCorporativo = clsGeneralDatos.GetDatosCnn(request.Nombrecorto);
+                if (objCorporativo != null)
+                {
+                    objrespuesta = clsLiberacion.ObtenerLiberacionesPendientes(request, objCorporativo);
+                }
+                else
+                {
+                    objrespuesta.MensajeError = "Cliente no encontrado." + request.Nombrecorto;
+                    objrespuesta.EstatusCodigo = 104;
+                }
+                return objrespuesta;
+            }
+            catch (Exception)
+            {
+                return objrespuesta;
+            }
+        }
+
+        public override async Task<DataResponseConfiguracion> saySETEstatusLiberacion(protoLiberacionEjecutable request, ServerCallContext context)
+        {
+            DataResponseConfiguracion objrespuesta = new DataResponseConfiguracion();
+            try
+            {
+                DatosCorporativo objCorporativo = clsGeneralDatos.GetDatosCnn(request.Nombrecorto);
+                if (objCorporativo != null)
+                {
+                    objrespuesta = clsLiberacion.ActualizarEstatusLiberacion(request, objCorporativo);
+                }
+                else
+                {
+                    objrespuesta.MensajeError = "Cliente no encontrado." + request.Nombrecorto;
+                    objrespuesta.EstatusCodigo = 104;
+                }
+                return objrespuesta;
+            }
+            catch (Exception)
+            {
+                return objrespuesta;
+            }
+        }
+
     }
 }

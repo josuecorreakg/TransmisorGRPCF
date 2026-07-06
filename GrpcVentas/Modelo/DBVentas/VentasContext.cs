@@ -123,6 +123,8 @@ public partial class VentasContext : DbContext
 
     public DbSet<TvTransmision> Tvtransmision { get; set; }
 
+    public DbSet<TvLiberaciones> TvLiberaciones { get; set; }
+
     public DbSet<KardexControlMensual> KardexControlMensual { get; set; }
     
 
@@ -1602,6 +1604,9 @@ public partial class VentasContext : DbContext
 
         modelBuilder.Entity<TvTransmision>()
             .HasKey(t => new { t.IdFran, t.IdOperacion });
+
+        modelBuilder.Entity<TvLiberaciones>()
+            .HasKey(l => new { l.IdFran, l.Clave, l.NombreSistema });
 
         modelBuilder.Entity<KardexControlMensual>(entity =>
         {

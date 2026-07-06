@@ -7,6 +7,8 @@ package respuestaConfiguracion;
 service RespuestaConfiguracionProto {
     rpc saySETConfiguracionDataByte(ConfiguracionDataByteRequest) returns (DataResponseConfiguracion);
     rpc saySETDescargaDataByte(ConfiguracionDataByteRequest) returns (DataResponseConfiguracion);
+    rpc sayGETLiberacionesPendientes(protodataConfiguracion) returns (protoRespuestaLiberaciones);
+    rpc saySETEstatusLiberacion(protoLiberacionEjecutable) returns (DataResponseConfiguracion);
 }
 
 message DataResponseConfiguracion {
@@ -65,11 +67,18 @@ message protoControlVersion {
 message protoLiberacionEjecutable {
   int32 idfran = 1;
   string clave = 2;
-  string nombrearchivo = 3;
-  string fechaliberacion = 4;
-  string fechainstalacion = 5;
-  string ruta = 6;
+  string nombreSistema = 3;
+  string fechaLiberacion = 4;
+  string fechaInstalacion = 5;
+  string rutaEvaluacion = 6;
   EstatusLiberacion estatus = 7;
+  string nombrecorto = 8;
+}
+
+message protoRespuestaLiberaciones {
+  repeated protoLiberacionEjecutable lsLiberaciones = 1;
+  int32 estatusCodigo = 2;
+  string mensajeError = 3;
 }
 
 message protoTvTransmision {
