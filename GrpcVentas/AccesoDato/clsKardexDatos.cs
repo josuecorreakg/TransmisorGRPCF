@@ -49,9 +49,7 @@ namespace GrpcVentas.AccesoDato
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.IdFran);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.Clave);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.Franquicia);
-                                if (!int.TryParse(item.IdProducto, out int idProducto))
-                                    throw new InvalidOperationException($"IdProducto no numérico: {item.IdProducto}");
-                                cmd.Parameters.AddWithValue($"@p{paramIndex++}", idProducto);
+                                cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.IdProducto);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.Producto);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", item.FechaOperacion);
                                 cmd.Parameters.AddWithValue($"@p{paramIndex++}", (object)item.PrecioVenta ?? DBNull.Value);
